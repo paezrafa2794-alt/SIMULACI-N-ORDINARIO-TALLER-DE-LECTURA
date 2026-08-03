@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examen de Simulación - Taller de Lectura y Redacción I</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0d1b1e 0%, #1c3127 50%, #2a3d31 100%);
+      --cocoon-bg: rgba(255, 255, 255, 0.05);
+      --cocoon-border: rgba(212, 175, 55, 0.3);
+      --chrysalis-gold: #d4af37;
+      --emerge-green: #a8e6cf;
+      --text-light: #f1f8f5;
+      --text-muted: #a3c1ad;
+      --card-bg: rgba(20, 35, 28, 0.65);
+      --option-hover: rgba(168, 230, 207, 0.15);
+      --accent-glow: rgba(212, 175, 55, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-light);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--cocoon-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--cocoon-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px var(--accent-glow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--cocoon-border);
+      padding-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: var(--chrysalis-gold);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-style: italic;
+    }
+
+    .user-info {
+      margin-bottom: 30px;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(168, 230, 207, 0.2);
+    }
+
+    .user-info label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--emerge-green);
+      font-weight: 600;
+    }
+
+    .user-info input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--cocoon-border);
+      border-radius: 8px;
+      color: var(--text-light);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .user-info input[type="text"]:focus {
+      border-color: var(--emerge-green);
+      box-shadow: 0 0 8px rgba(168, 230, 207, 0.3);
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .question-card:hover {
+      border-color: var(--chrysalis-gold);
+      transform: translateY(-2px);
+    }
+
+    .question-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 15px;
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .option-label:hover {
+      background: var(--option-hover);
+      border-color: var(--emerge-green);
+    }
+
+    .option-label input[type="radio"] {
+      margin-right: 12px;
+      accent-color: var(--chrysalis-gold);
+    }
+
+    .text-input-field {
+      width: 100%;
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--cocoon-border);
+      border-radius: 8px;
+      color: var(--text-light);
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .text-input-field:focus {
+      border-color: var(--emerge-green);
+    }
+
+    .section-header {
+      margin: 30px 0 20px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--chrysalis-gold);
+      color: var(--emerge-green);
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(90deg, #d4af37, #a8e6cf);
+      border: none;
+      border-radius: 12px;
+      color: #0d1b1e;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 30px;
+    }
+
+    .btn-submit:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 20px rgba(168, 230, 207, 0.5);
+    }
+
+    #result-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: var(--bg-gradient);
+      border: 2px solid var(--chrysalis-gold);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 30px var(--chrysalis-gold);
+      animation: emerge 0.5s ease-out;
+    }
+
+    @keyframes emerge {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-content h2 {
+      color: var(--emerge-green);
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    .modal-content p {
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    .score-display {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--chrysalis-gold);
+      margin: 20px 0;
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+
+    .btn-close {
+      padding: 10px 25px;
+      background: var(--chrysalis-gold);
+      border: none;
+      border-radius: 8px;
+      color: #0d1b1e;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Examen de Simulación</h1>
+    <p class="subtitle">Taller de Lectura y Redacción I — Metamorfosis Académica</p>
+  </header>
+
+  <form id="quizForm">
+    <div class="user-info">
+      <label for="studentName">Nombre completo del alumno:</label>
+      <input type="text" id="studentName" placeholder="Escribe tu nombre aquí..." required>
+    </div>
+
+    <div id="multipleChoiceContainer"></div>
+
+    <div class="section-header">Identificación de Falacias en Casos (22 - 30)</div>
+    <div id="casesContainer"></div>
+
+    <div class="section-header">Falacias Clásicas (31 - 36)</div>
+    <div id="fallaciesMcContainer"></div>
+
+    <button type="button" class="btn-submit" onclick="evaluateExam()">Evolucionar / Obtener Calificación</button>
+  </form>
+</div>
+
+<div id="result-modal">
+  <div class="modal-content">
+    <h2>Resultados de la Evaluación</h2>
+    <p id="resultUser" style="color: var(--emerge-green); font-weight: bold;"></p>
+    <p>Has completado el proceso de transformación lectora.</p>
+    <div class="score-display" id="resultScore">0 / 100</div>
+    <p id="resultDetails"></p>
+    <button class="btn-close" onclick="closeModal()">Cerrar</button>
+  </div>
+</div>
+
+<script>
+  const multipleChoiceData = [
+    {
+      q: "1. Tipo de texto que busca transmitir sentimientos, belleza estética y mundos ficcionales sin la obligación de reflejar objetivamente la realidad.",
+      options: ["A) Descriptivo", "B) Literario", "C) Periodístico", "D) Argumentativo"],
+      correct: "B"
+    },
+    {
+      q: "2. Formato o género literario dentro del cual se clasifica estructuralmente el cuento:",
+      options: ["A) Lírico", "B) Dramático", "C) Narrativo", "D) Épico"],
+      correct: "C"
+    },
+    {
+      q: "3. Género tradicional al cual pertenece la leyenda debido a su transmisión de hechos relatados:",
+      options: ["A) Narrativo", "B) Épico", "C) Lírico", "D) Dramático"],
+      correct: "A"
+    },
+    {
+      q: "4. Composición poética de lamento o melancolía que se adscribe al género:",
+      options: ["A) Épico", "B) Dramático", "C) Narrativo", "D) Lírico"],
+      correct: "D"
+    },
+    {
+      q: "5. Entidad ficticia concebida por el autor para articular la voz que relata los acontecimientos de la historia:",
+      options: ["A) Personaje", "B) Voz narrativa", "C) Espacio y tiempo", "D) Diégesis"],
+      correct: "B"
+    },
+    {
+      q: "6. Narrador primario que articula la historia desde el plano principal del relato sin involucrarse necesariamente como actor directo de las acciones:",
+      options: ["A) Narrador extradiegético", "B) Narrador intradiegético", "C) Monólogo interior", "D) Diégesis"],
+      correct: "A"
+    },
+    {
+      q: "7. Universo o mundo ficcional completo en el que se sustentan las reglas e historia de obras como 'Cyberpunk', 'Hollow Knight' o 'Arcane':",
+      options: ["A) Focalización", "B) Metadiégesis", "C) Diégesis", "D) Heterodiegético"],
+      correct: "C"
+    },
+    {
+      q: "8. Voz narrativa de segundo nivel que actúa dentro del propio universo narrativo, con frecuencia manifestada en primera persona:",
+      options: ["A) Monólogo interior", "B) Narrador extradiegético", "C) Narrador intradiegético", "D) Diégesis"],
+      correct: "C"
+    },
+    {
+      q: "9. Subgénero novelesco articulado alrededor de investigaciones, crímenes, detectives y atmósferas oscuras o de suspenso:",
+      options: ["A) Novela rosa", "B) Realista", "C) De caballería", "D) Negra y de terror"],
+      correct: "D"
+    },
+    {
+      q: "10. Alternancia o salto formal en el nivel o estrato dentro del cual se emite el relato:",
+      options: ["A) Metadiégesis", "B) Diégesis", "C) Focalización cero", "D) Narración simple"],
+      correct: "A"
+    },
+    {
+      q: "11. Recurso narrativo consistente en arrancar la trama directamente en el nudo o mitad de la historia, omitiendo la introducción inicial:",
+      options: ["A) Retrospección", "B) Circularidad", "C) In media res", "D) Cronología lineal"],
+      correct: "C"
+    },
+    {
+      q: "12. Modalidad organizativa del relato que expone los acontecimientos de forma temporalmente secuencial (planteamiento, nudo, desenlace):",
+      options: ["A) Repetición", "B) Cronología", "C) Interactiva", "D) Circularidad"],
+      correct: "B"
+    },
+    {
+      q: "13. Ruptura del flujo temporal que traslada la acción a eventos pasados o recuerdos antes de retornar al presente:",
+      options: ["A) Circularidad", "B) In media res", "C) Analepsis o retrospección", "D) Repetición"],
+      correct: "C"
+    },
+    {
+      q: "14. Configuración narrativa donde el avance del argumento depende de la toma de decisiones directas del usuario o lector (como en 'Bandersnatch' o 'Detroit: Become Human'):",
+      options: ["A) Cronológica", "B) Interactiva", "C) Repetición", "D) Analepsis"],
+      correct: "B"
+    },
+    {
+      q: "15. Narrador que se sitúa fuera de la acción pero posee conocimiento absoluto de los pensamientos, emociones y destino de todos los personajes:",
+      options: ["A) Omnisciente", "B) Equisciente", "C) Tercera persona testigo", "D) Poliédrico"],
+      correct: "A"
+    },
+    {
+      q: "16. Narrador que relata de manera externa solo aquello que puede percibir objetivamente a través de sus sentidos o visión limitada:",
+      options: ["A) Protagonista", "B) Observador o deficiente", "C) Omnisciente", "D) Testigo intrínseco"],
+      correct: "B"
+    },
+    {
+      q: "17. Expresión directa e ininterrumpida de los pensamientos y flujo de conciencia del propio personaje desde su subjetividad:",
+      options: ["A) Homodiegético", "B) Poliédrico", "C) Protagonista", "D) Monólogo interior"],
+      correct: "D"
+    },
+    {
+      q: "18. Texto narrativo de gran extensión, pluralidad de personajes, desarrollo psicológico profundo y múltiple entramado temático:",
+      options: ["A) Novela", "B) Relato", "C) Cuento", "D) Leyenda"],
+      correct: "A"
+    },
+    {
+      q: "19. Relato de carácter colectivo o ancestral que involucra deidades, héroes míticos y la explicación simbólica del origen del mundo:",
+      options: ["A) Epístola", "B) Mito", "C) Relato épico", "D) Leyenda"],
+      correct: "B"
+    },
+    {
+      q: "20. Subgénero narrativo caracterizado por su brevedad, escasez de personajes principales y una única línea temática central:",
+      options: ["A) Canción", "B) Fábula", "C) Cuento", "D) Relato extenso"],
+      correct: "C"
+    },
+    {
+      q: "21. Narración de origen popular con elementos fantásticos o exagerados integrada en la tradición oral de una comunidad específica:",
+      options: ["A) Epopeya", "B) Leyenda", "C) Ópera", "D) Mito primigenio"],
+      correct: "B"
+    }
+  ];
+
+  const casesData = [
+    {
+      num: 22,
+      text: "“Un alumno es descubierto copiando durante una prueba. El profesor le pide entregar el examen. El estudiante protesta aduciendo que no es justo, pues ha visto que otros compañeros también han consultado sus apuntes.” ¿En qué falacia incurre la defensa del alumno?",
+      answer: "tu quoque"
+    },
+    {
+      num: 23,
+      text: "“Un joven reconoce en privado que estudiar diariamente mejora sustancialmente sus notas, pero argumenta públicamente que no lo hace porque estudiar de noche le quita tiempo para jugar videojuegos con sus amigos.” ¿Qué falacia o justificación usa?",
+      answer: "racionalizacion"
+    },
+    {
+      num: 24,
+      text: "“Los defensores del sindicato son unos alarmistas y vividores que solo buscan huelgas. Por lo tanto, su propuesta sobre la mejora de equipos de seguridad industrial carece de valor.”",
+      answer: "ad hominem"
+    },
+    {
+      num: 25,
+      text: "“La Dra. Ramírez sostiene que es necesario implementar dietas bajas en azúcares refinados en la comunidad escolar. Sin embargo, los vecinos la descartan porque ella consume postres los fines de semana.”",
+      answer: "ad hominem"
+    },
+    {
+      num: 26,
+      text: "“Un comerciante le comenta al inspector municipal: 'Espero que apruebe la licencia de mi local pronto; sería una lástima que su vehículo sufriera un rayón fortuito en este estacionamiento'.”",
+      answer: "ad baculum"
+    },
+    {
+      num: 27,
+      text: "“Señor Juez, si usted no declara inocente a este joven, la humilde madre del acusado sufrirá un infarto debido al inmenso dolor.”",
+      answer: "ad misericordiam"
+    },
+    {
+      num: 28,
+      text: "“Un famoso futbolista profesional asegura en un anuncio comercial que las baterías de marca Titan son las de mayor duración del mercado.”",
+      answer: "ad verecundiam"
+    },
+    {
+      num: 29,
+      text: "“La existencia de vida microscópica en los océanos subterráneos de Europa (luna de Júpiter) es innegable, ya que nadie ha podido demostrar definitivamente lo contrario.”",
+      answer: "ad ignorantiam"
+    },
+    {
+      num: 30,
+      text: "“Hace tres años defendías que la educación presencial era la única alternativa válida. Ahora argumentas que la modalidad híbrida ofrece mejores beneficios. Por ende, no se te puede tomar en serio.”",
+      answer: "tu quoque"
+    }
+  ];
+
+  const fallaciesMcData = [
+    {
+      q: "31. '¿Cómo pretendes dar lecciones de economía doméstica si ni siquiera tienes un trabajo formal?'",
+      options: ["A) Post hoc, ergo propter hoc", "B) Ad hominem", "C) Ad verecundiam", "D) Muñeco de paja"],
+      correct: "B"
+    },
+    {
+      q: "32. 'La mayoría de la gente compra esta marca de teléfono, así que sin duda debe ser el mejor del mercado.'",
+      options: ["A) Ad populum", "B) Ad ignorantiam", "C) Ad verecundiam", "D) Post hoc"],
+      correct: "A"
+    },
+    {
+      q: "33. 'Si no firmas el acuerdo presupuestal hoy mismo, nos encargaremos de recortar los fondos de tu departamento.'",
+      options: ["A) Ad verecundiam", "B) Post hoc", "C) Ad baculum", "D) Muñeco de paja"],
+      correct: "C"
+    },
+    {
+      q: "34. 'Debes adoptar este tratamiento naturista porque un renombrado actor de cine lo recomendó en televisión.'",
+      options: ["A) Ad hominem", "B) Ad populum", "C) Ad ignorantiam", "D) Ad verecundiam"],
+      correct: "D"
+    },
+    {
+      q: "35. 'Ayer lave mi automóvil y por la tarde comenzó a llover. Por lo tanto, lavar el auto atrae las lluvias.'",
+      options: ["A) Post hoc, ergo propter hoc", "B) Ad ignorantiam", "C) Ad verecundiam", "D) Ad hominem"],
+      correct: "A"
+    },
+    {
+      q: "36. 'No hay evidencia definitiva que pruebe que el fantasma del teatro no existe; en consecuencia, reside allí.'",
+      options: ["A) Ad populum", "B) Ad ignorantiam", "C) Ad baculum", "D) Muñeco de paja"],
+      correct: "B"
+    }
+  ];
+
+  // Renderizar Preguntas
+  function renderQuiz() {
+    const mcContainer = document.getElementById('multipleChoiceContainer');
+    multipleChoiceData.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'question-card';
+      
+      let optionsHtml = '';
+      item.options.forEach((opt) => {
+        const letter = opt.trim().charAt(0);
+        optionsHtml += `
+          <label class="option-label">
+            <input type="radio" name="mc_${index}" value="${letter}">
+            ${opt}
+          </label>
+        `;
+      });
+
+      card.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options">${optionsHtml}</div>
+      `;
+      mcContainer.appendChild(card);
+    });
+
+    const casesContainer = document.getElementById('casesContainer');
+    casesData.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'question-card';
+      card.innerHTML = `
+        <div class="question-title">${item.num}. ${item.text}</div>
+        <input type="text" class="text-input-field" id="case_${item.num}" placeholder="Escribe el tipo de falacia (ej. Ad hominem, Tu quoque, Ad baculum...)">
+      `;
+      casesContainer.appendChild(card);
+    });
+
+    const fallaciesMcContainer = document.getElementById('fallaciesMcContainer');
+    fallaciesMcData.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'question-card';
+      
+      let optionsHtml = '';
+      item.options.forEach((opt) => {
+        const letter = opt.trim().charAt(0);
+        optionsHtml += `
+          <label class="option-label">
+            <input type="radio" name="fmc_${index}" value="${letter}">
+            ${opt}
+          </label>
+        `;
+      });
+
+      card.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options">${optionsHtml}</div>
+      `;
+      fallaciesMcContainer.appendChild(card);
+    });
+  }
+
+  function normalizeText(text) {
+    return text.toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
+  }
+
+  function evaluateExam() {
+    const studentName = document.getElementById('studentName').value.trim();
+    if (!studentName) {
+      alert("Por favor, ingresa tu nombre completo antes de evaluar el examen.");
+      return;
+    }
+
+    let correctAnswers = 0;
+    const totalQuestions = 36;
+
+    // Bloque 1: Opción múltiple (1-21)
+    multipleChoiceData.forEach((item, index) => {
+      const selected = document.querySelector(`input[name="mc_${index}"]:checked`);
+      if (selected && selected.value === item.correct) {
+        correctAnswers++;
+      }
+    });
+
+    // Bloque 2: Casos Falacias (22-30)
+    casesData.forEach((item) => {
+      const input = document.getElementById(`case_${item.num}`);
+      if (input) {
+        const val = normalizeText(input.value);
+        const target = normalizeText(item.answer);
+        if (val.includes(target)) {
+          correctAnswers++;
+        }
+      }
+    });
+
+    // Bloque 3: Falacias Opción Múltiple (31-36)
+    fallaciesMcData.forEach((item, index) => {
+      const selected = document.querySelector(`input[name="fmc_${index}"]:checked`);
+      if (selected && selected.value === item.correct) {
+        correctAnswers++;
+      }
+    });
+
+    const score = Math.round((correctAnswers / totalQuestions) * 100);
+
+    document.getElementById('resultUser').innerText = `Estudiante: ${studentName}`;
+    document.getElementById('resultScore').innerText = `${score} / 100`;
+    document.getElementById('resultDetails').innerText = `Aciertos: ${correctAnswers} de ${totalQuestions} reactivos.`;
+    
+    document.getElementById('result-modal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('result-modal').style.display = 'none';
+  }
+
+  window.onload = renderQuiz;
+</script>
+</body>
+</html>
